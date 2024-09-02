@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 23:55:23 by mshabano          #+#    #+#             */
-/*   Updated: 2024/09/02 17:01:46 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/09/02 17:48:10 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,12 @@
 
 int main(int ac, char **av, char **env)
 {
-	ft_printf("HENLO!\n%s\n%s\n%d", av[1], env[0], ac);
+	int	pipe_fd[2];
+	pid_t	ch_1;
+	pid_t	ch_2;
+
+	if (av != 5)
+		exit(1);
+	if (pipe(pipe_fd) < 0)
+		exit(1)
 }
