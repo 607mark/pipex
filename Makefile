@@ -5,7 +5,7 @@ SRCS =  pipex.c
 OBJS = $(SRCS:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -g
 
 LIBFT_DIR = ./libft
 FT_PRINTF_DIR = $(LIBFT_DIR)/ft_printf

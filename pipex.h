@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:42:38 by mshabano          #+#    #+#             */
-/*   Updated: 2024/09/02 17:54:51 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/09/04 02:18:59 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,5 @@
 # include "libft/libft.h"
 # include <sys/wait.h>
 # include <sys/types.h>
-
+# include <errno.h>
 # endif
