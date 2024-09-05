@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:17:33 by mshabano          #+#    #+#             */
-/*   Updated: 2024/06/20 19:45:00 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/09/05 16:05:49 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
@@ -17,7 +17,7 @@ void	print_format(const char **specifier, va_list args, int *printed)
 
 	len = 0;
 	if (**specifier == 'c')
-		len = write(1, &(char){(char)va_arg(args, int)}, 1);
+		len = write(2, &(char){(char)va_arg(args, int)}, 1);
 	else if (**specifier == 's')
 		put_str(va_arg(args, char *), -1, &len);
 	else if (**specifier == 'p')
@@ -29,7 +29,7 @@ void	print_format(const char **specifier, va_list args, int *printed)
 	else if (**specifier == 'x' || **specifier == 'X')
 		len = put_hex(va_arg(args, unsigned int), **specifier);
 	else if (**specifier == '%')
-		len = write(1, "%", 1);
+		len = write(2, "%", 1);
 	else if (**specifier == 0)
 		len = -1;
 	if (len < 0)

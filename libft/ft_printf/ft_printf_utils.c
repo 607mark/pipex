@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 19:49:26 by mshabano          #+#    #+#             */
-/*   Updated: 2024/08/17 12:51:37 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/09/05 16:04:03 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ int	put_str(const char *s, int len, int *printed)
 	tmp = 0;
 	if (!s)
 	{
-		tmp = ((write(1, "(null)", 6)));
+		tmp = ((write(2, "(null)", 6)));
 		*printed += tmp;
 		return (tmp);
 	}
 	if (len == -1)
 		len = pr_strlen(s);
-	tmp = (write (1, s, len));
+	tmp = (write (2, s, len));
 	if (tmp == -1)
 		*printed = -1;
 	else

@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 22:11:30 by mshabano          #+#    #+#             */
-/*   Updated: 2024/04/28 22:20:06 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/09/05 20:01:45 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -30,7 +30,7 @@ static size_t	count_words(char const *s, char c)
 	return (n);
 }
 
-static void	free_arr(char **arr)
+void	free_arr(char **arr)
 {
 	size_t	i;
 

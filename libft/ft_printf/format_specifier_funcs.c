@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:48:56 by mshabano          #+#    #+#             */
-/*   Updated: 2024/06/20 18:19:17 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/09/05 16:04:55 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	put_ptr(unsigned long ptr)
 	ret_value = 0;
 	tmp = 0;
 	if (!ptr)
-		return ((write(1, "(nil)", 5)));
-	if (write(1, "0x", 2) == -1)
+		return ((write(2, "(nil)", 5)));
+	if (write(2, "0x", 2) == -1)
 		return (-1);
 	if (ptr > 15)
 	{
@@ -30,7 +30,7 @@ int	put_ptr(unsigned long ptr)
 			return (-1);
 	}
 	ret_value += tmp + 2;
-	if (write(1, &HEX_LOW[ptr % 16], 1) == -1)
+	if (write(2, &HEX_LOW[ptr % 16], 1) == -1)
 		return (-1);
 	ret_value++;
 	return (ret_value);
@@ -47,7 +47,7 @@ int	put_hex(long long num, char c)
 	ret_value = 0;
 	i = 15;
 	if (num == 0)
-		return (write (1, "0", 1));
+		return (write (2, "0", 1));
 	while (num > 0)
 	{
 		if (c == 'x')
@@ -56,7 +56,7 @@ int	put_hex(long long num, char c)
 			hex_num[i--] = HEX_UPP[num % 16];
 		num /= 16;
 	}
-	tmp = write(1, &hex_num[i + 1], 15 - i);
+	tmp = write(2, &hex_num[i + 1], 15 - i);
 	if (tmp == -1)
 		return (-1);
 	return (ret_value + tmp);
@@ -71,10 +71,10 @@ int	put_int(long long n)
 	ret_value = 0;
 	i = 18;
 	if (n == 0)
-		return (write(1, "0", 1));
+		return (write(2, "0", 1));
 	if (n < 0)
 	{
-		if (write (1, "-", 1) == -1)
+		if (write (2, "-", 1) == -1)
 			return (-1);
 		n = -n;
 		ret_value++;
@@ -84,7 +84,7 @@ int	put_int(long long n)
 		dec_num[i--] = HEX_LOW[n % 10];
 		n /= 10;
 	}
-	if (write(1, &dec_num[i + 1], 18 - i) == -1)
+	if (write(2, &dec_num[i + 1], 18 - i) == -1)
 		return (-1);
 	return (ret_value + 18 - i);
 }
