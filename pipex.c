@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 23:55:23 by mshabano          #+#    #+#             */
-/*   Updated: 2024/09/05 23:42:50 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/09/06 00:24:49 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void exit_error(char *s, int n, t_pipex *p)
 	exit(1);
 }
 
-void parent_process(t_pipex *p)
+void parent_process(t_pipex *p, pid_t pid)
 {
 	p->outfile_fd = open(p->outfile_name, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (p->outfile_fd == -1)
@@ -58,7 +58,6 @@ void child_process(t_pipex *p)
 
 void pipex_init(t_pipex *p, char **av, char **env)
 {
-	ft_bzero(p, sizeof(p));
 	if (pipe(p->pipe_fd) < 0)
 		exit_error("pipe()", 1, p);
 	p->env = env;
@@ -78,6 +77,7 @@ int main(int ac, char **av, char **env)
 	t_pipex	p;
 	pid_t	pid;
 
+	ft_bzero(&p, sizeof(p));
 	if (ac != 5)
 		exit_error("wrong number of arguments", 0, &p);
 	pipex_init(&p, av, env);
@@ -87,5 +87,5 @@ int main(int ac, char **av, char **env)
 	else if (pid == 0)
 		child_process(&p);
 	else
-		parent_process(&p);
+		parent_process(&p,pid);
 }	
