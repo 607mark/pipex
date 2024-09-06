@@ -6,12 +6,12 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:42:38 by mshabano          #+#    #+#             */
-/*   Updated: 2024/09/05 23:40:15 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/09/06 18:33:58 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
-# define PIXEX_H
+# define PIPEX_H
 
 # include <fcntl.h>
 # include "libft/libft.h"
@@ -38,7 +38,7 @@ typedef struct s_pipex
 	char	*cmd2;
 	char	*infile_name;
 	char	*outfile_name;
-
+	int		status;
 	int		i;
 } t_pipex;		
 

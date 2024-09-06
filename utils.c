@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 22:03:50 by mshabano          #+#    #+#             */
-/*   Updated: 2024/09/05 23:51:54 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/09/06 21:42:35 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,16 @@ char *fetch_cmd_path(char *cmd, t_pipex *p)
 	{
 		c.path_part = ft_strjoin(p->path[p->i], "/");
 		c.executable = ft_strjoin(c.path_part, cmd);
-		free(c.path_part);
-		if(!access(c.executable, F_OK | X_OK))
-			return(c.executable);
-		free(c.executable);
-		p->i++;
+		if (c.path_part && c.executable)
+		{
+			free(c.path_part);
+			if(!access(c.executable, F_OK | X_OK))
+				return(c.executable);
+			free(c.executable);
+			p->i++;
+		}
+		else
+			exit_error("ft_strjoin():malloc failed", 0, p);
 	}
 	return(NULL);
 }

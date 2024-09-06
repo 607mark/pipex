@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 23:55:23 by mshabano          #+#    #+#             */
-/*   Updated: 2024/09/06 00:24:49 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/09/06 21:34:46 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void exit_error(char *s, int n, t_pipex *p)
 {
-	if (n)
+	if (n == 1)
 		ft_printf("-pipex: %s: %s\n", s, strerror(errno));
-	else
+	else if (n == 0)
 		ft_printf("-pipex: %s\n", s);
 	if(p->path)
 	{	
@@ -40,6 +40,7 @@ void parent_process(t_pipex *p, pid_t pid)
 	if(dup2(p->pipe_fd[0], 0) == -1)
 		exit_error("dup2()", 1, p);
 	close(p->pipe_fd[1]);
+	close(p->outfile_fd);
 	execute_cmd(p->cmd2, p);
 }
 
@@ -53,6 +54,7 @@ void child_process(t_pipex *p)
 	if(dup2(p->pipe_fd[1], 1) == -1)
 		exit_error("dup2()", 1, p);
 	close(p->pipe_fd[0]);
+	close(p->infile_fd);
 	execute_cmd(p->cmd1, p);
 }
 
@@ -87,5 +89,11 @@ int main(int ac, char **av, char **env)
 	else if (pid == 0)
 		child_process(&p);
 	else
-		parent_process(&p,pid);
+	{
+		wait(&p.status);
+		if (WIFEXITED(p.status))
+			parent_process(&p,pid);
+		else
+			exit_error("child didn't exit", 2, &p);
+	}
 }	
