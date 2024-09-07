@@ -6,20 +6,20 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 23:55:23 by mshabano          #+#    #+#             */
-/*   Updated: 2024/09/06 23:39:03 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/09/07 20:43:51 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void exit_error(char *s, int n, t_pipex *p)
+void	exit_error(char *s, int n, t_pipex *p)
 {
 	if (n == 1)
 		ft_printf("-pipex: %s: %s\n", s, strerror(errno));
 	else if (n == 0)
 		ft_printf("-pipex: %s\n", s);
-	if(p->path)
-	{	
+	if (p->path)
+	{
 		free_arr(p->path);
 		free(p->path);
 	}
@@ -30,35 +30,35 @@ void exit_error(char *s, int n, t_pipex *p)
 	exit(1);
 }
 
-void parent_process(t_pipex *p, pid_t pid)
+void	parent_process(t_pipex *p)
 {
 	p->outfile_fd = open(p->outfile_name, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (p->outfile_fd == -1)
 		exit_error(p->outfile_name, 1, p);
-	if(dup2(p->outfile_fd, 1) == -1)
+	if (dup2(p->outfile_fd, 1) == -1)
 		exit_error("dup2()", 1, p);
-	if(dup2(p->pipe_fd[0], 0) == -1)
+	if (dup2(p->pipe_fd[0], 0) == -1)
 		exit_error("dup2()", 1, p);
 	fd_close(&p->pipe_fd[1]);
 	fd_close(&p->outfile_fd);
 	execute_cmd(p->cmd2, p);
 }
 
-void child_process(t_pipex *p)
+void	child_process(t_pipex *p)
 {
 	p->infile_fd = open(p->infile_name, O_RDWR);
 	if (p->infile_fd < 0)
 		exit_error(p->infile_name, 1, p);
-	if(dup2(p->infile_fd, 0) == -1)
+	if (dup2(p->infile_fd, 0) == -1)
 		exit_error("dup2()", 1, p);
-	if(dup2(p->pipe_fd[1], 1) == -1)
+	if (dup2(p->pipe_fd[1], 1) == -1)
 		exit_error("dup2()", 1, p);
 	fd_close(&p->pipe_fd[0]);
 	fd_close(&p->infile_fd);
 	execute_cmd(p->cmd1, p);
 }
 
-void pipex_init(t_pipex *p, char **av, char **env)
+void	pipex_init(t_pipex *p, char **av, char **env)
 {
 	if (pipe(p->pipe_fd) < 0)
 		exit_error("pipe()", 1, p);
@@ -74,7 +74,7 @@ void pipex_init(t_pipex *p, char **av, char **env)
 		exit_error("PATH not found", 0, p);
 }
 
-int main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **env)
 {
 	t_pipex	p;
 	pid_t	pid;
@@ -92,8 +92,8 @@ int main(int ac, char **av, char **env)
 	{
 		wait(&p.status);
 		if (WIFEXITED(p.status))
-			parent_process(&p,pid);
+			parent_process(&p);
 		else
 			exit_error("child didn't exit", 2, &p);
 	}
-}	
+}

@@ -6,23 +6,23 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 22:03:50 by mshabano          #+#    #+#             */
-/*   Updated: 2024/09/06 22:02:55 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/09/07 20:46:47 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void fd_close(int *fd)
+void	fd_close(int *fd)
 {
 	if (*fd == -1)
 		return ;
 	close(*fd);
-	*fd == -1;
+	*fd = -1;
 }
 
-char *fetch_cmd_path(char *cmd, t_pipex *p)
+char	*fetch_cmd_path(char *cmd, t_pipex *p)
 {
-	t_exec_cmd c;
+	t_exec_cmd	c;
 
 	p->i = 0;
 	while (p->path[p->i] != NULL)
@@ -37,18 +37,18 @@ char *fetch_cmd_path(char *cmd, t_pipex *p)
 			exit_error("ft_strjoin():malloc failed", 0, p);
 		}
 		free(c.path_part);
-		if(!access(c.executable, F_OK | X_OK))
+		if (!access(c.executable, F_OK | X_OK))
 			return (c.executable);
 		free(c.executable);
 		p->i++;
 	}
-	return(NULL);
+	return (NULL);
 }
 
-void execute_cmd(char *cmd, t_pipex *p)
+void	execute_cmd(char *cmd, t_pipex *p)
 {
-	char **cmd_split;
-	char *cmd_path;
+	char	**cmd_split;
+	char	*cmd_path;
 
 	cmd_split = NULL;
 	cmd_path = NULL;
@@ -62,7 +62,13 @@ void execute_cmd(char *cmd, t_pipex *p)
 		free(cmd_split);
 		if (cmd_path)
 			free(cmd_path);
-		exit_error(cmd, 1, p);
+		if (!cmd_path)
+		{
+			ft_printf("-pipex: %s: command not found\n", cmd);
+			exit_error(0, 2, p);
+		}
+		else
+			exit_error(cmd, 1, p);
 	}
 }
 
@@ -71,14 +77,14 @@ void	pipex_getenv_path(t_pipex *p)
 	p->i = 0;
 	if (p->env == NULL)
 		exit_error("environment variables not found", 0, p);
-	while(p->env[p->i] != NULL)
+	while (p->env[p->i] != NULL)
 	{
 		if (!ft_strncmp("PATH=", p->env[p->i], 5))
 		{
 			p->path = ft_split(p->env[p->i] + 5, ':');
 			if (!p->path)
 				exit_error("memory allocation failure", 0, p);
-			break;
+			break ;
 		}
 		(p->i)++;
 	}

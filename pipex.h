@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:42:38 by mshabano          #+#    #+#             */
-/*   Updated: 2024/09/06 18:33:58 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/09/07 20:47:50 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@
 
 typedef struct s_exec_cmd
 {
-	char *path_part;
-	char *executable;
-} t_exec_cmd;
+	char	*path_part;
+	char	*executable;
+}	t_exec_cmd;
 
 typedef struct s_pipex
 {
@@ -40,11 +40,11 @@ typedef struct s_pipex
 	char	*outfile_name;
 	int		status;
 	int		i;
-} t_pipex;		
+}	t_pipex;		
 
-void exit_error(char *s, int n, t_pipex *p);
-int fd_is_open(int fd);
-void execute_cmd(char *cmd, t_pipex *p);
-void    pipex_getenv_path(t_pipex *p);
+void	exit_error(char *s, int n, t_pipex *p);
+void	fd_close(int *fd);
+void	execute_cmd(char *cmd, t_pipex *p);
+void	pipex_getenv_path(t_pipex *p);
 
-# endif
+#endif
