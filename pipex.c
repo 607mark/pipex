@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 23:55:23 by mshabano          #+#    #+#             */
-/*   Updated: 2024/09/07 21:14:51 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/09/07 21:24:50 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	child_process(t_pipex *p)
 
 void	pipex_init(t_pipex *p, char **av, char **env)
 {
-	if (pipe(p->pipe_fd) < 0)
+	if (pipe(p->pipe_fd) == -1)
 		exit_error("pipe()", 1, p);
 	p->env = env;
 	p->infile_name = av[1];
@@ -70,7 +70,7 @@ void	pipex_init(t_pipex *p, char **av, char **env)
 	p->infile_fd = -1;
 	p->outfile_fd = -1;
 	pipex_getenv_path(p);
-	if (p->path == NULL || p->path[0][0] == '\0')
+	if (p->path == NULL)
 		exit_error("PATH not found", 0, p);
 }
 
