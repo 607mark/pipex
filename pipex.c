@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 23:55:23 by mshabano          #+#    #+#             */
-/*   Updated: 2024/09/07 21:00:00 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/09/07 21:14:51 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,9 @@ int	main(int ac, char **av, char **env)
 	else
 	{
 		wait(&p.status);
-		if (WIFEXITED(p.status) && p.status == 0)
+		if (WIFEXITED(p.status) && WEXITSTATUS(p.status) == 0)
 			parent_process(&p);
 		else
-			exit_error("child didn't exit", 2, &p);
+			exit_error(0, 2, &p);
 	}
 }
