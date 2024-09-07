@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 23:55:23 by mshabano          #+#    #+#             */
-/*   Updated: 2024/09/07 20:43:51 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/09/07 20:53:53 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ void	pipex_init(t_pipex *p, char **av, char **env)
 	p->cmd1 = av[2];
 	p->cmd2 = av[3];
 	p->outfile_name = av[4];
+	p->pipe_fd[0] = -1;
+	p->pipe_fd[1] = -1;
 	p->infile_fd = -1;
 	p->outfile_fd = -1;
 	pipex_getenv_path(p);
