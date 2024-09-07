@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 23:55:23 by mshabano          #+#    #+#             */
-/*   Updated: 2024/09/06 21:34:46 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/09/06 23:39:03 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ void exit_error(char *s, int n, t_pipex *p)
 		free_arr(p->path);
 		free(p->path);
 	}
-	if (fd_is_open(p->infile_fd))
-		close(p->infile_fd);
-	if (fd_is_open(p->outfile_fd))
-		close(p->outfile_fd);
+	fd_close(&p->infile_fd);
+	fd_close(&p->infile_fd);
+	fd_close(&p->pipe_fd[0]);
+	fd_close(&p->pipe_fd[1]);
 	exit(1);
 }
 
@@ -39,8 +39,8 @@ void parent_process(t_pipex *p, pid_t pid)
 		exit_error("dup2()", 1, p);
 	if(dup2(p->pipe_fd[0], 0) == -1)
 		exit_error("dup2()", 1, p);
-	close(p->pipe_fd[1]);
-	close(p->outfile_fd);
+	fd_close(&p->pipe_fd[1]);
+	fd_close(&p->outfile_fd);
 	execute_cmd(p->cmd2, p);
 }
 
@@ -53,8 +53,8 @@ void child_process(t_pipex *p)
 		exit_error("dup2()", 1, p);
 	if(dup2(p->pipe_fd[1], 1) == -1)
 		exit_error("dup2()", 1, p);
-	close(p->pipe_fd[0]);
-	close(p->infile_fd);
+	fd_close(&p->pipe_fd[0]);
+	fd_close(&p->infile_fd);
 	execute_cmd(p->cmd1, p);
 }
 

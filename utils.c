@@ -6,17 +6,18 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 22:03:50 by mshabano          #+#    #+#             */
-/*   Updated: 2024/09/06 21:42:35 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/09/06 22:02:55 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int fd_is_open(int fd)
+void fd_close(int *fd)
 {
-	if (fd == -1)
-		return (0);
-	return (!(write(fd, 0, 0) == -1 && errno == EBADF));
+	if (*fd == -1)
+		return ;
+	close(*fd);
+	*fd == -1;
 }
 
 char *fetch_cmd_path(char *cmd, t_pipex *p)
@@ -27,17 +28,19 @@ char *fetch_cmd_path(char *cmd, t_pipex *p)
 	while (p->path[p->i] != NULL)
 	{
 		c.path_part = ft_strjoin(p->path[p->i], "/");
+		if (!c.path_part)
+			exit_error("ft_strjoin():malloc failed", 0, p);
 		c.executable = ft_strjoin(c.path_part, cmd);
-		if (c.path_part && c.executable)
+		if (!c.executable)
 		{
 			free(c.path_part);
-			if(!access(c.executable, F_OK | X_OK))
-				return(c.executable);
-			free(c.executable);
-			p->i++;
-		}
-		else
 			exit_error("ft_strjoin():malloc failed", 0, p);
+		}
+		free(c.path_part);
+		if(!access(c.executable, F_OK | X_OK))
+			return (c.executable);
+		free(c.executable);
+		p->i++;
 	}
 	return(NULL);
 }
@@ -53,11 +56,12 @@ void execute_cmd(char *cmd, t_pipex *p)
 	if (cmd_split == NULL)
 		exit_error("ft_split()", 0, p);
 	cmd_path = fetch_cmd_path(cmd_split[0], p);
-	if (execve(cmd_path, cmd_split, p->env) == -1)
+	if (!cmd_path || execve(cmd_path, cmd_split, p->env) == -1)
 	{
 		free_arr(cmd_split);
 		free(cmd_split);
-		free(cmd_path);
+		if (cmd_path)
+			free(cmd_path);
 		exit_error(cmd, 1, p);
 	}
 }
