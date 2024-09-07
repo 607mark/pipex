@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 20:29:39 by mshabano          #+#    #+#             */
-/*   Updated: 2024/09/05 20:02:10 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/09/07 20:51:55 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef LIBFT_H
@@ -24,7 +24,7 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
-void    free_arr(char **arr);
+void	free_arr(char **arr);
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);
