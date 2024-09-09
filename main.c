@@ -91,7 +91,7 @@ int	main(int ac, char **av, char **env)
 	else
 	{
 		wait(&p.status);
-		if (WIFEXITED(p.status) && WEXITSTATUS(p.status) == 0)
+		if (WIFEXITED(p.status))
 			parent_process(&p);
 		else
 			exit_error(0, 2, &p);
