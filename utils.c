@@ -72,7 +72,7 @@ void	execute_cmd(char *cmd, t_pipex *p)
 	}
 }
 
-void	pipex_getenv_path(t_pipex *p)
+void	getenv_path(t_pipex *p)
 {
 	p->i = 0;
 	if (p->env == NULL)

@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 23:55:23 by mshabano          #+#    #+#             */
-/*   Updated: 2024/09/07 21:24:50 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/10/01 14:07:45 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ void	parent_process(t_pipex *p)
 
 void	child_process(t_pipex *p)
 {
+	p->infile_fd = open(p->infile_name, O_RDWR);
+	if (p->infile_fd < 0)
+		exit_error(p->infile_name, 1, p);
 	fd_close(&p->pipe_fd[0]);
 	if (dup2(p->infile_fd, 0) == -1)
 		exit_error("dup2()", 1, p);
@@ -63,12 +66,9 @@ void	pipex_init(t_pipex *p, char **av, char **env)
 	p->outfile_name = av[4];
 	p->infile_fd = -1;
 	p->outfile_fd = -1;
-	pipex_getenv_path(p);
+	getenv_path(p);
 	if (p->path == NULL)
 		exit_error("PATH not found", 0, p);
-	p->infile_fd = open(p->infile_name, O_RDWR);
-	if (p->infile_fd < 0)
-		exit_error(p->infile_name, 1, p);
 	p->outfile_fd = open(p->outfile_name, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (p->outfile_fd == -1)
 		exit_error(p->outfile_name, 1, p);
@@ -89,11 +89,5 @@ int	main(int ac, char **av, char **env)
 	else if (pid == 0)
 		child_process(&p);
 	else
-	{
-		wait(&p.status);
-		if (WIFEXITED(p.status))
-			parent_process(&p);
-		else
-			exit_error(0, 2, &p);
-	}
+		parent_process(&p);
 }

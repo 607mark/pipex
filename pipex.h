@@ -45,6 +45,6 @@ typedef struct s_pipex
 void	exit_error(char *s, int n, t_pipex *p);
 void	fd_close(int *fd);
 void	execute_cmd(char *cmd, t_pipex *p);
-void	pipex_getenv_path(t_pipex *p);
+void	getenv_path(t_pipex *p);
 
 #endif
