@@ -71,7 +71,7 @@ void	pipex_init(t_pipex *p, char **av, char **env)
 	getenv_path(p);
 	if (p->path == NULL)
 		exit_error("PATH not found", 0, p);
-	p->outfile_fd = open(p->outfile_name, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	p->outfile_fd = open(p->outfile_name, O_WRONLY | O_CREAT | O_TRUNC);
 	if (p->outfile_fd == -1)
 		exit_error(p->outfile_name, 1, p);
 }
